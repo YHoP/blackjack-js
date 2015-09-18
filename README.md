@@ -2,7 +2,7 @@
 
 ##### A popular card game at most casinos.
 
-##### Date of current version: 09/17/15
+##### Date of current version: 09/18/15
 
 #### By **Ashley Sullins, Archana Bongale and Yvonne Peng**
 
@@ -14,8 +14,8 @@
 
 ## Setup
 
-* Clone this git repository on your computer ```git clone https://github.com/YHoP/blackjack-js.git ```
-* To open in your browser, navigate to correct directory ```cd path/to/blackjack-js``` and type ```open blackjack.html```
+* Clone this git repository on your computer<br> ```git clone https://github.com/YHoP/blackjack-js.git ```
+* To open in your browser, navigate to correct directory<br> ```cd path/to/blackjack-js```<br> and type<br> ```open blackjack.html```
 
 
 ## Technologies Used
