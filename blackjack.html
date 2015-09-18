@@ -11,39 +11,35 @@
     <div class="container">
       <h1>Blackjack</h1>
 
-      <form id="blackjack">
-
-      <button id="play" class="btn btn-info" type="submit">Play Blackjack</button>
+      <form id="deal" class="col-md-2">
+      <button id="deal" class="btn btn-info" type="submit">Deal</button>
       </form>
-      <hr>
-      <form id="hit">
+
+      <form id="hit" class="col-md-2">
         <button id="hit" class="btn btn-success" type="submit">Hit</button>
       </form>
-      <br>
-      <form id="stand">
+
+      <form id="stand" class="col-md-2">
         <button id="stand" class="btn btn-warning" type="submit">Stand</button>
       </form>
-      <hr>
 
-      <div id="player">
+      <form id="clear" class="col-md-2">
+        <button id="clear" class="btn btn-primary" type="submit">Clear</button>
+      </form>
+
+      <div id="player" class="col-md-6">
         <h3>Player</h3>
         <p><span class="player"></span></p>
       </div>
 
-      <hr>
-
-      <div id="dealer">
+      <div id="dealer" class="col-md-6">
         <h3>Dealer</h3>
         <p><span class="dealer"></span></p>
       </div>
 
-      <hr>
-      
-      <div id="result">
-        <h3>Result</h3>
-        <p><span class="result"></span></p>
+      <div id="result" class="col-md-6">
+        <p><h3><span class="result"></span></h3></p>
       </div>
-
 
     </div>
   </body>
