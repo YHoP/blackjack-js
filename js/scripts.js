@@ -58,7 +58,8 @@ var getHandValue = function(handArray){
   return valueArray;
 };
 
-var isContainAce = function(valueArray) {
+var isContainAce = function(handArray) {
+  var valueArray = getHandValue(handArray);
   var hasAce = false;
   for(var i in valueArray) {
     console.log(valueArray[i]);
@@ -69,7 +70,8 @@ var isContainAce = function(valueArray) {
   return hasAce;
 };
 
-var calculateValues = function(valueArray){
+var calculateValues = function(handArray){
+  var valueArray = getHandValue(handArray);
   var totalValue = 0;
   for (var i in valueArray){
     if (valueArray[i] <= 10){
@@ -78,30 +80,44 @@ var calculateValues = function(valueArray){
     totalValue += 10;
     }
   }
+  if(totalValue < 21 && isContainAce(handArray)){
+    totalValue += 10;
+    if (totalValue > 21){
+      totalValue -= 10;
+    }
+  }
+
   return totalValue;
 };
 
-var gameResult = function (playerArray, dealerArray) {
+var gameResult = function (playerHand, dealerHand) {
   var result = "";
 
-  var playerTotal = calculateValues(playerArray);
-  var dealerTotal = calculateValues(dealerArray);
+  var playerTotal = calculateValues(playerHand);
+  var dealerTotal = calculateValues(dealerHand);
 
   if (playerTotal > 21){
     result = "You busted!!";
   } else if (dealerTotal > 21){
-    result = "Dealer busted!!";
+    result = "You win!!  Dealer busted.";
   } else {
-
        if (playerTotal > dealerTotal){
         result = "You win!";
       } else if(dealerTotal > playerTotal){
         result = "Dealer win!";
-      } else {
+      } else if (playerTotal === dealerTotal){
         result = "It's a push!";
       }
   }
   return result;
+};
+
+var isBlackjack = function(playerHand){
+  var isBlackjack = false;
+  if (isContainAce(playerHand) && calculateValues(playerHand)===21){
+    isBlackjack = true;
+  }
+  return isBlackjack;
 };
 
 var allEmpty = function (){
@@ -110,40 +126,47 @@ var allEmpty = function (){
   playerHand = [];
 };
 
-
 $(document).ready(function() {
   $("form#deal").submit(function() {
     $(".player").empty();
+    $(".playerTotal").empty();
     $(".dealer").empty();
+    $(".dealerTotal").empty();
     $(".result").empty();
 
     allEmpty();
 
-    saveCardToHand(playerHand, getNewCard());
-    saveCardToHand(playerHand, getNewCard());
+    for (var j = 0; j < 2; j++){
+      saveCardToHand(dealerHand, getNewCard());
+      saveCardToHand(playerHand, getNewCard());
+    }
+
     for (var i in playerHand){
       $(".player").append("<img src=\'img/"+playerHand[i][1]+"_of_"+playerHand[i][0]+"s.png\' height='140' width='100'>");
     }
 
-    saveCardToHand(dealerHand, getNewCard());
-    saveCardToHand(dealerHand, getNewCard());
     $(".dealer").append("<img src=\'img/back.png\' height='140' width='100'>");
-    $(".dealer").append("<img src=\'img/"+dealerHand[1][1]+"_of_"+dealerHand[1][0]+"s.png\' height='140' width='100'>").slideDown((500*i)+1000);
+    $(".dealer").append("<img src=\'img/"+dealerHand[1][1]+"_of_"+dealerHand[1][0]+"s.png\' height='140' width='100'>");
+
+    if(isBlackjack(playerHand)){
+      $(".result").append("<font color='blue'>Blackjack! </font><font color='red'> You win!!</font>");
+    }
 
     event.preventDefault();
   });
 
   $("form#hit").submit(function(event) {
     $(".player").empty();
+    $(".playerTotal").empty();
     saveCardToHand(playerHand, getNewCard());
-    var value = calculateValues(getHandValue(playerHand));
-    if (value > 21){
+    var playerHandValue = calculateValues(playerHand);
+    if (playerHandValue > 21){
       $(".result").text("You busted!!");
     }
     for (var i in playerHand){
       $(".player").append("<img src=\'img/"+playerHand[i][1]+"_of_"+playerHand[i][0]+"s.png\' height='140' width='100'>");
-
     }
+    $(".playerTotal").text(" : " + calculateValues(playerHand));
     event.preventDefault();
   });
 
@@ -151,7 +174,11 @@ $(document).ready(function() {
     $(".player").empty();
     $(".dealer").empty();
     $(".result").empty();
-    var winner = gameResult(getHandValue(playerHand), getHandValue(dealerHand));
+    while(calculateValues(dealerHand) < 17){
+      saveCardToHand(dealerHand, getNewCard());
+    }
+
+    var winner = gameResult(playerHand, dealerHand);
 
     for (var i in playerHand){
       $(".player").append("<img src=\'img/"+playerHand[i][1]+"_of_"+playerHand[i][0]+"s.png\' height='140' width='100'>");
@@ -161,6 +188,8 @@ $(document).ready(function() {
       $(".dealer").append("<img src=\'img/"+dealerHand[i][1]+"_of_"+dealerHand[i][0]+"s.png\' height='140' width='100'>");
     }
 
+    $(".playerTotal").text(" : " + calculateValues(playerHand));
+    $(".dealerTotal").text(" : " + calculateValues(dealerHand));
     $(".result").text(winner);
 
     event.preventDefault();
@@ -168,8 +197,11 @@ $(document).ready(function() {
 
   $("form#clear").submit(function() {
     $(".player").empty();
+    $(".playerTotal").empty();
     $(".dealer").empty();
+    $(".dealerTotal").empty();
     $(".result").empty();
+    allEmpty();
   });
 
 }); // end of document
