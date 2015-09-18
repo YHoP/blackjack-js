@@ -10,7 +10,11 @@
 
 
 ## Description
-* A popular card game at most casinos is Blackjack. The goal of the game is to beat the dealer by either reaching "21" with the cards you are dealt or being closer to "21" than the dealer. If your cards add up to more than "21", you lose.
+* The goal of the game is to beat the dealer by either reaching "21" with the cards you are dealt or being closer to "21" than the dealer. If your cards add up to more than "21", you lose.
+* The player or players are dealt a two-card hand and add together the value of their cards. 
+* Face cards (kings, queens, and jacks) are counted as ten points. 
+* A player and the dealer can count an ace as 1 point or 11 points. 
+* The dealer must hit until the cards total 17 or more points. 
 
 ## Setup
 
