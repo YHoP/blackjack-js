@@ -5,40 +5,33 @@
     <link href="css/styles.css" rel="stylesheet" type="text/css">
     <script src="js/jquery-1.11.3.js"></script>
     <script src="js/scripts.js"></script>
+    <script src="css/styles.css"></script>
     <title>Blackjack</title>
   </head>
   <body>
     <div class="container">
       <h1>Blackjack</h1>
+    <table class="buttons">
+      <tr>
+        <td class="col-md-4">&nbsp;<button id="deal" class="btn btn-info">Deal</button></td>
+        <td class="col-md-4">&nbsp;<button id="hit" class="btn btn-success">Hit</button></td>
+        <td class="col-md-4">&nbsp;<button id="stand" class="btn btn-warning">Stand</button></td>
+        <td class="col-md-4"><button id="clear" class="btn btn-primary">Next Round</button></td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td colspan="3"><h3><span class="result"></span>&nbsp;</h3></td>
+      </tr>
+    </table>
 
-      <form id="deal" class="col-md-2">
-      <button id="deal" class="btn btn-info" type="submit">Deal</button>
-      </form>
-
-      <form id="hit" class="col-md-2">
-        <button id="hit" class="btn btn-success" type="submit">Hit</button>
-      </form>
-
-      <form id="stand" class="col-md-2">
-        <button id="stand" class="btn btn-warning" type="submit">Stand</button>
-      </form>
-
-      <form id="clear" class="col-md-2">
-        <button id="clear" class="btn btn-primary" type="submit">Clear</button>
-      </form>
-
-      <div id="player" class="col-md-6">
+      <div id="player" class="poker">
         <h3>Player  <span class="playerTotal"></span></h3>
         <p><span class="player"></span></p>
       </div>
 
-      <div id="dealer" class="col-md-6">
+      <div id="dealer" class="poker">
         <h3>Dealer  <span class="dealerTotal"></span></h3>
-        <p><span class="dealer"></span></p>
-      </div>
-
-      <div id="result" class="col-md-6">
-        <p><h3><span class="result"></span></h3></p>
+        <p><span class="dealerCard0"></span><span class="dealerCards"></span></p>
       </div>
 
     </div>

@@ -127,12 +127,14 @@ var allEmpty = function (){
 };
 
 $(document).ready(function() {
-  $("form#deal").submit(function() {
-    $(".player").empty();
-    $(".playerTotal").empty();
-    $(".dealer").empty();
-    $(".dealerTotal").empty();
-    $(".result").empty();
+
+  $("button#hit").hide();
+  $("button#stand").hide();
+
+  $("button#deal").click(function() {
+    $("button#deal").hide();
+    $("button#hit").show();
+    $("button#stand").show();
 
     allEmpty();
 
@@ -142,51 +144,69 @@ $(document).ready(function() {
     }
 
     for (var i in playerHand){
-      $(".player").append("<img src=\'img/"+playerHand[i][1]+"_of_"+playerHand[i][0]+"s.png\' height='140' width='100'>");
+      var idIndex = "playerCard" + i;
+      var imgPosition = 100 + i*5;
+      var imgSpeed = 800 + i*200;
+      $(".player").append("<img id=\'"+ idIndex +"\' src=\'img/"+playerHand[i][1]+"_of_"+playerHand[i][0]+"s.png\' height='140' width='100'>");
+      $("img#"+idIndex+"").animate({left:""+imgPosition+"px"}, imgSpeed);
     }
 
-    $(".dealer").append("<img src=\'img/back.png\' height='140' width='100'>");
-    $(".dealer").append("<img src=\'img/"+dealerHand[1][1]+"_of_"+dealerHand[1][0]+"s.png\' height='140' width='100'>");
+    $(".dealerCard0").append("<img id='dealerCard0' src=\'img/back.png\' height='140' width='100'>");
+    $("img#dealerCard0").animate({left:'100px'}, 800);
+    $(".dealerCards").append("<img id='dealerCard1' src=\'img/"+dealerHand[1][1]+"_of_"+dealerHand[1][0]+"s.png\' height='140' width='100'>");
+    $("img#dealerCard1").animate({left:'105px'}, 1000);
 
     if(isBlackjack(playerHand)){
       $(".result").append("<font color='blue'>Blackjack! </font><font color='red'> You win!!</font>");
+      $("button#hit").hide();
+      $("button#stand").hide();
     }
 
     event.preventDefault();
   });
 
-  $("form#hit").submit(function(event) {
-    $(".player").empty();
-    $(".playerTotal").empty();
+  $("button#hit").click(function(event) {
+    $("button#deal").hide();
+    $("button#stand").show();
+
     saveCardToHand(playerHand, getNewCard());
     var playerHandValue = calculateValues(playerHand);
     if (playerHandValue > 21){
       $(".result").text("You busted!!");
+      $("button#hit").hide();
+      $("button#stand").hide();
     }
-    for (var i in playerHand){
-      $(".player").append("<img src=\'img/"+playerHand[i][1]+"_of_"+playerHand[i][0]+"s.png\' height='140' width='100'>");
-    }
+
+    var j = playerHand.length - 1;
+    var idIndex = "playerCard" + j;
+    var imgPosition = 100 + j*5;
+    $(".player").append("<img id=\'"+ idIndex +"\' src=\'img/"+playerHand[j][1]+"_of_"+playerHand[j][0]+"s.png\' height='140' width='100'>");
+    $("img#"+idIndex+"").animate({left:""+imgPosition+"px"}, 800);
+
     $(".playerTotal").text(" : " + calculateValues(playerHand));
     event.preventDefault();
   });
 
-  $("form#stand").submit(function() {
-    $(".player").empty();
-    $(".dealer").empty();
-    $(".result").empty();
+  $("button#stand").click(function() {
+    $("button#deal").hide();
+    $("button#hit").hide();
+
+    $(".dealerCard0").empty();
+    $(".dealerCard0").append("<img src=\'img/"+dealerHand[0][1]+"_of_"+dealerHand[0][0]+"s.png\' height='140' width='100'>");
+
     while(calculateValues(dealerHand) < 17){
       saveCardToHand(dealerHand, getNewCard());
     }
 
+    for (var i = 2; i < dealerHand.length; i++){
+      var idIndex = "dealerCard" + i;
+      var imgPosition = 100 + i*5;
+      var imgSpeed = 800 + i*200;
+      $(".dealerCards").append("<img id=\'"+ idIndex +"\' src=\'img/"+dealerHand[i][1]+"_of_"+dealerHand[i][0]+"s.png\' height='140' width='100'>");
+      $("img#"+idIndex+"").animate({left:""+imgPosition+"px"}, imgSpeed);
+    }
+
     var winner = gameResult(playerHand, dealerHand);
-
-    for (var i in playerHand){
-      $(".player").append("<img src=\'img/"+playerHand[i][1]+"_of_"+playerHand[i][0]+"s.png\' height='140' width='100'>");
-    }
-
-    for (var i in dealerHand){
-      $(".dealer").append("<img src=\'img/"+dealerHand[i][1]+"_of_"+dealerHand[i][0]+"s.png\' height='140' width='100'>");
-    }
 
     $(".playerTotal").text(" : " + calculateValues(playerHand));
     $(".dealerTotal").text(" : " + calculateValues(dealerHand));
@@ -195,10 +215,16 @@ $(document).ready(function() {
     event.preventDefault();
   });
 
-  $("form#clear").submit(function() {
+  $("button#clear").click(function() {
+    $("button#deal").show();
+
+    $("button#hit").hide();
+    $("button#stand").hide();
+
     $(".player").empty();
     $(".playerTotal").empty();
-    $(".dealer").empty();
+    $(".dealerCard0").empty();
+    $(".dealerCards").empty();
     $(".dealerTotal").empty();
     $(".result").empty();
     allEmpty();
