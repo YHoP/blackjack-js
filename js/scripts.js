@@ -102,7 +102,7 @@ var gameResult = function (playerHand, dealerHand) {
     result = "You win!!  Dealer busted.";
   } else {
        if (playerTotal > dealerTotal){
-        result = "You win!";
+        result = "You win!!";
       } else if(dealerTotal > playerTotal){
         result = "Dealer win!";
       } else if (playerTotal === dealerTotal){
@@ -183,7 +183,6 @@ $(document).ready(function() {
     $(".player").append("<img id=\'"+ idIndex +"\' src=\'img/"+playerHand[j][1]+"_of_"+playerHand[j][0]+"s.png\' height='140' width='100'>");
     $("img#"+idIndex+"").animate({left:""+imgPosition+"px"}, 800);
 
-    $(".playerTotal").text(" : " + calculateValues(playerHand));
     event.preventDefault();
   });
 
@@ -210,10 +209,12 @@ $(document).ready(function() {
 
     var winner = gameResult(playerHand, dealerHand);
 
-    $(".playerTotal").text(" : " + calculateValues(playerHand));
-    $(".dealerTotal").text(" : " + calculateValues(dealerHand));
-    $(".result").text(winner);
-
+    $(".playerTotal").append(" : " + calculateValues(playerHand));
+    $("#playerPoints").delay("slow");
+    $(".dealerTotal").append(" : " + calculateValues(dealerHand));
+    $("#dealerPoints").delay("slow");
+    $(".result").append(winner);
+    $("#result").delay("slow");
     event.preventDefault();
   });
 
