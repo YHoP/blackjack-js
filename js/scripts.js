@@ -209,12 +209,9 @@ $(document).ready(function() {
 
     var winner = gameResult(playerHand, dealerHand);
 
-    $(".playerTotal").append(" : " + calculateValues(playerHand));
-    $("#playerPoints").delay("slow");
-    $(".dealerTotal").append(" : " + calculateValues(dealerHand));
-    $("#dealerPoints").delay("slow");
-    $(".result").append(winner);
-    $("#result").delay("slow");
+    $(".playerTotal").text(" : " + calculateValues(playerHand));
+    $(".dealerTotal").text(" : " + calculateValues(dealerHand));
+    $(".result").text(winner);
     event.preventDefault();
   });
 
