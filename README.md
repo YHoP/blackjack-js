@@ -1,6 +1,6 @@
 # _Blackjack_
 
-##### A popular card game at most casinos.
+##### A popular card game.
 
 ##### Date of current version: 09/18/15
 
@@ -11,9 +11,10 @@
 
 ## Description
 * The goal of the game is to beat the dealer by either reaching "21" with the cards you are dealt or being closer to "21" than the dealer. If your cards add up to more than "21", you lose.
-* The player or players are dealt a two-card hand and add together the value of their cards. 
+* The player is dealt cards where the values of the cards are added together.
+* The player starts with a two-card hand and can continue to "hit" for more cards until s/he chooses to "stand" or busts (over "21"). 
 * Face cards (kings, queens, and jacks) are counted as ten points. 
-* A player and the dealer can count an ace as 1 point or 11 points. 
+* An ace can be counted as 1 point or 11 points. 
 * The dealer must hit until the cards total 17 or more points. 
 
 ## Setup
