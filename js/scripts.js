@@ -151,8 +151,8 @@ $(document).ready(function() {
       $("img#"+idIndex+"").animate({left:""+imgPosition+"px"}, imgSpeed);
     }
 
-    $(".dealerCard0").append("<img id='dealerCard0' src=\'img/back.png\' height='140' width='100'>");
-    $("img#dealerCard0").animate({left:'100px'}, 800);
+    $(".dealerCard0").append("<img id='dealerCardb' src=\'img/back.png\' height='140' width='100'>");
+    $("img#dealerCardb").animate({left:'100px'}, 800);
     $(".dealerCards").append("<img id='dealerCard1' src=\'img/"+dealerHand[1][1]+"_of_"+dealerHand[1][0]+"s.png\' height='140' width='100'>");
     $("img#dealerCard1").animate({left:'105px'}, 1000);
 
@@ -192,11 +192,13 @@ $(document).ready(function() {
     $("button#hit").hide();
 
     $(".dealerCard0").empty();
-    $(".dealerCard0").append("<img src=\'img/"+dealerHand[0][1]+"_of_"+dealerHand[0][0]+"s.png\' height='140' width='100'>");
 
     while(calculateValues(dealerHand) < 17){
       saveCardToHand(dealerHand, getNewCard());
     }
+
+    $(".dealerCard0").append("<img id='dealerCard0' src=\'img/"+dealerHand[0][1]+"_of_"+dealerHand[0][0]+"s.png\' height='140' width='100'>");
+    $("img#dealerCard0").animate({left:'100px'}, 0);
 
     for (var i = 2; i < dealerHand.length; i++){
       var idIndex = "dealerCard" + i;
