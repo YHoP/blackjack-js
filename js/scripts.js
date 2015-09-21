@@ -189,6 +189,7 @@ $(document).ready(function() {
   $("button#stand").click(function() {
     $("button#deal").hide();
     $("button#hit").hide();
+    $("button#stand").hide();
 
     $(".dealerCard0").empty();
 
