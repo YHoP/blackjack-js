@@ -1,6 +1,8 @@
 var tableHands = [];
 var dealerHand = [];
 var playerHand = [];
+var playerNewHand = [];
+
 
 var suit = function (){
   var suitName = ["spade", "heart", "diamond", "club"];
@@ -62,7 +64,6 @@ var isContainAce = function(handArray) {
   var valueArray = getHandValue(handArray);
   var hasAce = false;
   for(var i in valueArray) {
-    console.log(valueArray[i]);
     if(valueArray[i] === 1) {
       hasAce = true;
     }
@@ -120,21 +121,35 @@ var isBlackjack = function(playerHand){
   return isBlackjack;
 };
 
+var isSameValueCards = function(playerHand) {
+  var isSameValue = false;
+  var playerHandValue = getHandValue(playerHand);
+  if (playerHandValue[0] === playerHandValue[1]){
+    isSameValue = true;
+  }
+  return isSameValue;
+}
+
 var allEmpty = function (){
   tableHands = [];
   dealerHand = [];
   playerHand = [];
+  playerNewHand = [];
+
 };
 
 $(document).ready(function() {
 
   $("button#hit").hide();
+  $("button#hit1").hide();
+  $("button#hit2").hide();
   $("button#stand").hide();
+  $("button#stand1").hide();
+  $("button#stand2").hide();
+  $("button#split").hide();
 
   $("button#deal").click(function() {
     $("button#deal").hide();
-    $("button#hit").show();
-    $("button#stand").show();
 
     allEmpty();
 
@@ -162,8 +177,53 @@ $(document).ready(function() {
       $("button#stand").hide();
     }
 
+    if(isSameValueCards(playerHand)){
+      $("button#split").fadeIn(5000);
+    }else{
+      $("button#hit").show();
+      $("button#stand").show();
+    }
+
     event.preventDefault();
   });
+
+$("button#split").click(function(event) {
+    $("button#deal").hide();
+    $("button#split").hide();
+
+    $("button#hit1").show();
+    $("button#stand1").show();
+
+    $("img#playerCard1").animate({left:'500px'}, 800);
+
+    playerNewHand.push(playerHand[1]);
+    playerHand[1]= null;
+    playerHand[1] = getNewCard();
+    saveCardToHand(playerNewHand, getNewCard());
+
+    $(".player").empty();
+    for (var i in playerHand){
+      var idIndex = "playerCard" + i;
+      var imgPosition = 100 + i*5;
+      $(".player").append("<img id=\'"+ idIndex +"\' src=\'img/"+playerHand[i][1]+"_of_"+playerHand[i][0]+"s.png\' height='140' width='100'>");
+      $("img#"+idIndex+"").animate({left:""+imgPosition+"px"}, 0);
+    }
+
+    for (var i in playerNewHand){
+      var idIndex = "playerNewCard" + i;
+      var imgPosition = 100 + i*5;
+      $(".playerNew").append("<img id=\'"+ idIndex +"\' src=\'img/"+playerNewHand[i][1]+"_of_"+playerNewHand[i][0]+"s.png\' height='140' width='100'>");
+      $("img#"+idIndex+"").animate({left:""+imgPosition+"px"}, 0);
+    }
+
+    if(isBlackjack(playerHand) || isBlackjack(playerNewHand)){
+      $(".result").append("<font color='blue'>Blackjack! </font><font color='red'> You win!!</font>");
+      $("button#hit1").hide();
+      $("button#stand1").hide();
+    }
+
+  event.preventDefault();
+});
 
   $("button#hit").click(function(event) {
     $("button#deal").hide();
@@ -216,13 +276,144 @@ $(document).ready(function() {
     event.preventDefault();
   });
 
+  $("button#hit1").click(function(event) {
+    $("button#deal").hide();
+    $("button#stand1").show();
+
+    saveCardToHand(playerHand, getNewCard());
+    var playerHandValue = calculateValues(playerHand);
+    if (playerHandValue > 21){
+      $(".playerTotal").text("Busted!");
+      $("button#hit1").hide();
+      $("button#stand1").hide();
+      $("button#hit2").show();
+      $("button#stand2").show();
+    }
+
+    var j = playerHand.length - 1;
+    var idIndex = "playerCard" + j;
+    var imgPosition = 100 + j*5;
+    $(".player").append("<img id=\'"+ idIndex +"\' src=\'img/"+playerHand[j][1]+"_of_"+playerHand[j][0]+"s.png\' height='140' width='100'>");
+    $("img#"+idIndex+"").animate({left:""+imgPosition+"px"}, 800);
+
+    event.preventDefault();
+  });
+
+  $("button#stand1").click(function() {
+    $("button#deal").hide();
+    $("button#hit1").hide();
+    $("button#stand1").hide();
+    $("button#hit2").show();
+    $("button#stand2").show();
+
+    $(".playerTotal").text(" : " + calculateValues(playerHand));
+
+    event.preventDefault();
+  });
+
+  $("button#hit2").click(function(event) {
+    $("button#deal").hide();
+    $("button#hit1").hide();
+    $("button#stand1").hide();
+    $("button#stand2").show();
+
+    saveCardToHand(playerNewHand, getNewCard());
+    var playerNewHandValue = calculateValues(playerNewHand);
+    if (playerNewHandValue > 21){
+      $(".playerNewTotal").text("Busted!");
+      $("button#hit2").hide();
+      $("button#stand2").hide();
+
+      $(".dealerCard0").empty();
+
+      while(calculateValues(dealerHand) < 17){
+        saveCardToHand(dealerHand, getNewCard());
+      }
+
+      $(".dealerCard0").append("<img id='dealerCard0' src=\'img/"+dealerHand[0][1]+"_of_"+dealerHand[0][0]+"s.png\' height='140' width='100'>");
+      $("img#dealerCard0").animate({left:'100px'}, 0);
+
+      for (var i = 2; i < dealerHand.length; i++){
+        var idIndex = "dealerCard" + i;
+        var imgPosition = 100 + i*5;
+        var imgSpeed = 800 + i*200;
+        $(".dealerCards").append("<img id=\'"+ idIndex +"\' src=\'img/"+dealerHand[i][1]+"_of_"+dealerHand[i][0]+"s.png\' height='140' width='100'>");
+        $("img#"+idIndex+"").animate({left:""+imgPosition+"px"}, imgSpeed);
+      }
+
+      var winner = gameResult(playerHand, dealerHand);
+
+      $(".dealerTotal").text(" : " + calculateValues(dealerHand));
+      $(".result").text(winner);
+
+    }
+
+    var j = playerNewHand.length - 1;
+    var idIndex = "playerNewCard" + j;
+    var imgPosition = 100 + j*5;
+    $(".playerNew").append("<img id=\'"+ idIndex +"\' src=\'img/"+playerNewHand[j][1]+"_of_"+playerNewHand[j][0]+"s.png\' height='140' width='100'>");
+    $("img#"+idIndex+"").animate({left:""+imgPosition+"px"}, 800);
+
+    event.preventDefault();
+  });
+
+  $("button#stand2").click(function() {
+    $("button#deal").hide();
+    $("button#hit").hide();
+    $("button#hit1").hide();
+    $("button#hit2").hide();
+    $("button#stand").hide();
+    $("button#stand2").hide();
+    $("button#stand2").hide();
+
+    $(".dealerCard0").empty();
+
+    while(calculateValues(dealerHand) < 17){
+      saveCardToHand(dealerHand, getNewCard());
+    }
+
+    $(".dealerCard0").append("<img id='dealerCard0' src=\'img/"+dealerHand[0][1]+"_of_"+dealerHand[0][0]+"s.png\' height='140' width='100'>");
+    $("img#dealerCard0").animate({left:'100px'}, 0);
+
+    for (var i = 2; i < dealerHand.length; i++){
+      var idIndex = "dealerCard" + i;
+      var imgPosition = 100 + i*5;
+      var imgSpeed = 800 + i*200;
+      $(".dealerCards").append("<img id=\'"+ idIndex +"\' src=\'img/"+dealerHand[i][1]+"_of_"+dealerHand[i][0]+"s.png\' height='140' width='100'>");
+      $("img#"+idIndex+"").animate({left:""+imgPosition+"px"}, imgSpeed);
+    }
+
+    var playerBest = Math.max(calculateValues(playerHand), calculateValues(playerNewHand));
+    var dealerTotal = calculateValues(dealerHand);
+    var result = "";
+    if (playerBest > dealerTotal){
+        result = "You win!!";
+      } else if(dealerTotal > playerBest){
+        result = "Dealer win!";
+      } else if (playerBest === dealerTotal){
+        result = "It's a push!";
+      }
+
+    $(".playerNewTotal").text(" : " + calculateValues(playerNewHand));
+    $(".dealerTotal").text(" : " + calculateValues(dealerHand));
+    $(".result").append(result);
+    event.preventDefault();
+  });
+
+
   $("button#clear").click(function() {
     $("button#deal").show();
 
     $("button#hit").hide();
+    $("button#hit1").hide();
+    $("button#hit2").hide();
     $("button#stand").hide();
+    $("button#stand1").hide();
+    $("button#stand2").hide();
 
     $(".player").empty();
+    $(".playerNewTotal").empty();
+    $(".playerNew").empty();
     $(".playerTotal").empty();
     $(".dealerCard0").empty();
     $(".dealerCards").empty();

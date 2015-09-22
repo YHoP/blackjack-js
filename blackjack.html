@@ -19,21 +19,31 @@
         <td class="col-md-4"><button id="clear" class="btn btn-primary">Next Round</button></td>
       </tr>
       <tr>
+        <td class="col-md-4"><button id="hit1" class="btn btn-success">Hit</button>&nbsp;<button id="stand1" class="btn btn-warning">Stand</button></td>
+        <td class="col-md-4">&nbsp;</td>
+        <td class="col-md-4"><button id="hit2" class="btn btn-success">Hit</button>&nbsp;<button id="stand2" class="btn btn-warning">Stand</button></td>
+        <td class="col-md-4">&nbsp;</td>
+      </tr>
+      <tr>
         <td>&nbsp;</td>
-        <td colspan="3"><h3 id="result"><span class="result"></span>&nbsp;</h3></td>
+        <td colspan="3">&nbsp;<button id="split" class="btn btn-danger">Split ?</button><h3 id="result"><span class="result"></span>&nbsp;</h3></td>
       </tr>
     </table>
-
-      <div id="player" class="poker">
-        <h3 id="playerPoints">Player  <span class="playerTotal"></span></h3>
+    <div class="row">
+      <div id="player" class="poker col-md-6">
+        <h3 id="playerPoints">Player <span class="playerTotal"></span></h3>
         <p><span class="player"></span></p>
       </div>
-
-      <div id="dealer" class="poker">
-        <h3 id="dealerPoints">Dealer  <span class="dealerTotal"></span></h3>
+      <div id='playerNew' class='poker col-md-6'>
+        <h3 id="playerPoints"><span class="playerNewTotal"></span></h3>
+        <p><span class='playerNew'></span></p>
+      </div>
+    </div>
+    <div class="row">
+      <div id="dealer" class="poker col-md-9">
+        <h3 id="dealerPoints"> Dealer <span class="dealerTotal"></span></h3>
         <p><span class="dealerCard0"></span><span class="dealerCards"></span></p>
       </div>
-
     </div>
   </body>
 </html>
